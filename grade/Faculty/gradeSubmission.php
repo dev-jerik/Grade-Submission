@@ -121,18 +121,21 @@
                 if(hasEmptyGrades(arrGrades) === true){
                     alert('Error! Empty grades cannot be submitted.');
                 }else{
-                    objJSON = JSON.stringify(arrGrades);              
-                    var offerID = $("#hidden_offer").val();
-                    var season=getGradingSeason();
-                    var term = $("#gradingPeriod-term").val();
-                    $.post("../Model/Service.php",
-                    {season: season, term:term, offerID: offerID, objJSON, objJSON, action: "submitGrades"},
-                        function(data){
-                            alert(data);
-                            showSubjectStatus();
-                            genGradeSubmission(offerID);
-                        }
-                    );
+                    var option = confirm("Are you sure you want to submit this grades?");
+                    if (option == true) {
+                        objJSON = JSON.stringify(arrGrades);              
+                        var offerID = $("#hidden_offer").val();
+                        var season=getGradingSeason();
+                        var term = $("#gradingPeriod-term").val();
+                        $.post("../Model/Service.php",
+                        {season: season, term:term, offerID: offerID, objJSON, objJSON, action: "submitGrades"},
+                            function(data){
+                                alert(data);
+                                showSubjectStatus();
+                                genGradeSubmission(offerID);
+                            }
+                        );
+                    }
                 }
 				 
               });
