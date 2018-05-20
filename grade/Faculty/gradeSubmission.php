@@ -105,20 +105,36 @@
       				}); 
 				return TableData;
             }
+
+            function hasEmptyGrades(data){
+                var arrLength = data.length;
+                for(var i=0; i < arrLength; i++){
+                    if(data[i].grade === ''){
+                        return true;
+                    }
+                }
+                return false;
+            }
             $(document).on("click", "#elec-submitGrade", function(e){
             	e.preventDefault();
-				      objJSON = JSON.stringify(tblGradesValues());              
-            	var offerID = $("#hidden_offer").val();
-            	var season=getGradingSeason();
-            	var term = $("#gradingPeriod-term").val();
-  				    $.post("../Model/Service.php",
-                      {season: season, term:term, offerID: offerID, objJSON, objJSON, action: "submitGrades"},
-                      function(data){
-                      	alert(data);
-                      	showSubjectStatus();
-                        genGradeSubmission(offerID);
-                      }
-                  ); 
+                var arrGrades = tblGradesValues();
+                if(hasEmptyGrades(arrGrades) === true){
+                    alert('Error! Empty grades cannot be submitted.');
+                }else{
+                    objJSON = JSON.stringify(arrGrades);              
+                    var offerID = $("#hidden_offer").val();
+                    var season=getGradingSeason();
+                    var term = $("#gradingPeriod-term").val();
+                    $.post("../Model/Service.php",
+                    {season: season, term:term, offerID: offerID, objJSON, objJSON, action: "submitGrades"},
+                        function(data){
+                            alert(data);
+                            showSubjectStatus();
+                            genGradeSubmission(offerID);
+                        }
+                    );
+                }
+				 
               });
             function csvGradeValues(){
               var TableData = new Array();
@@ -237,7 +253,6 @@
             	$.post("../Model/Service.php",
                     {season:season, offerID: offerID, term: term, action: "getGradeSubmissionView"},
                     function(data){
-                        alert(data)
                     	$("#gradeSubmissionView").html(data);
                     	//alert(data)
                     }
