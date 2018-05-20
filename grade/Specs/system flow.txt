@@ -1,0 +1,65 @@
+Login
+	Student
+		view student info
+		view enrolled subjects
+			view grades
+		print grade report
+		manage account	
+	Faculty
+		Instructor
+			view list of courses handled
+				view list of students
+					view grades	
+					add grades
+					update grades
+					delete grades
+					print grade report	
+				pass for approval
+				print class grade report
+			search student/course
+			manage account	
+		Approver
+			view list of grades to be approved
+				approve grades
+			view list of instructors
+				view course handled
+					approved
+						view list of students
+						view students' grades
+					pending
+						view list of students
+						view students' grades
+						approve grades
+					print grade report
+				pass to admin
+			search instructor/course/student
+			manage account		
+	Administrator
+		view list by:
+			departments
+				view list of faculty/instructors
+					view course handled
+						view list of students
+						view grades
+						update grades
+						print grade report
+					print class grade report
+			faculty/instructors
+				view course handled
+					view list of students
+					view grades
+					update grades
+					print grade report
+				print class grade report
+			students
+				view students info
+				view grades
+				update grades
+				print grade report
+		search department/faculty/student
+		manage user account
+			add user
+			update user
+			delete user
+		
+Logout		
