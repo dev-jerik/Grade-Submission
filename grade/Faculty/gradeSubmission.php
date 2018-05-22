@@ -242,11 +242,18 @@
                }else {
                   var html="<div class='fileUpload-area'> "+
                   "<form id='uploadCSV' method='POST' enctype='multipart/form-data'><input type='file' id='csvFile-upload' style='display:none' accept='.csv' />"
-                  +"<button class='btn btn-default' id='btnFile-upload' style='margin: 0' type='button' name='submit'>Upload File</button>"+
+                  +"<button class='btn btn-default' id='btnFile-upload' style='margin: 0' type='button' name='submit'>Upload File</button>"
+                  +"<br /><button class='btn btn-success' id='btnDownload-csv' style='margin: 0' type='button' name='submit'>Download CSV TEMPLATE</button>"+
                   "</form>"
                   +"</div>";
                   $("#gradingMethod-View").html(html);
                }        
+            });
+
+            $(document).on("click", "#btnDownload-csv", function(e){
+                var fileName = $('#csvFileName').html();
+                var offerID = $("#hidden_offer").val();
+                window.location.href="../Model/DownloadCSV.php?fileName="+fileName+"&offerID="+offerID;
             });
             
             //generate the view for grade submission

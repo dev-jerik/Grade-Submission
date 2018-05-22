@@ -142,6 +142,7 @@
 		$header =
 				"<div class='col-md-12'>
 					<div class='space-8'></div>	
+					<div id='csvFileName' style='display:none'>{$subjectInfo['subCode']}_{$subjectInfo['offerNum']}</div>
 					<div class='box-window'>
 						<div class='box-header'>
 							GRADES <span class='pull-right' id='holder2'><i class='fa fa-chevron-up'></i></span>
