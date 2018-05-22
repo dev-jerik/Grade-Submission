@@ -25,19 +25,25 @@
 				$studentCount=1;
 				$output = "";
 				$errors = "";
+				$csvStudentIdIndex=0;
+				$csvGradeIndex = 3;
+
 				foreach ($csvAsArray as $value) {
 					if($ctr === 0 ) {
 						$ctr++;
 						continue;
 					}
-					$stud = $student->getStudentEnroll(trim($value[0]), $_POST['offerID'], $season);
-					if($stud && trim($value[1]) != ""){
+					$stud = $student->getStudentEnroll(trim($value[$csvStudentIdIndex]), $_POST['offerID'], $season);
+					if($stud && trim($value[$csvGradeIndex]) != ""){
+						$trimGrade = trim($value[$csvGradeIndex]);
+						$grade = is_numeric($trimGrade) ? 
+									number_format($trimGrade,2): validateStrGrade($trimGrade);
 						$output .= "<tr>
 								<td style='display: none'>".$stud['studLevelID']."</td>
 								<td>".$studentCount."</td>
-								<td>".trim($value[0])."</td>
+								<td>".trim($value[$csvStudentIdIndex])."</td>
 								<td>".getFullName($stud['LastName'],$stud['FirstName'],$stud['MiddleName'])."</td>
-								<td>".trim($value[1])."</td>
+								<td>".$grade."</td>
 						</tr>";
 						$studentCount++;
 					}else{
@@ -64,4 +70,11 @@
 	function getFullName($lastName, $firstName, $middleName){
 		return $lastName.", ".$firstName." ".(isset($middleName)?substr($middleName,0,1).".": "");
 	}
+
+	function validateStrGrade($strGrade){
+        if(strtoupper(substr($strGrade,0,3)) === 'INC'){
+            return 'INC';
+        }
+        return 'DR';
+    }
  ?>
