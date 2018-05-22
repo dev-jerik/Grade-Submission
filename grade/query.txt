@@ -1,0 +1,10 @@
+//list all the instructor by department
+SELECT offer.offerID, offer.instID, instructor.lName FROM `p20151offering` as offer
+INNER JOIN instructor ON instructor.instID=offer.instID
+INNER JOIN room ON offer.roomID=room.roomID
+WHERE room.deptID=1 GROUP BY instructor.instID
+ORDER BY instructor.lName
+//list subject by instructor;
+SELECT o.offerID, o.offerNum, o.subType, s.subCode, s.subDesc FROM p20151offering as o INNER JOIN subject s ON s.subID=o.subID WHERE o.instID=32 
+//student classRecord
+Select stud.StudID, stud.LastName, stud.FirstName, stud.MiddleName, major.majorName, enroll.yrLevel, grade.Midterm, grade.Final FROM p20151class AS class INNER JOIN p20151enroll enroll ON class.StudLevelID=enroll.StudLevelID INNER JOIN p20151grade grade ON (class.studLevelID=grade.StudLevelID AND grade.offerID=class.offerID) INNER JOIN students stud ON stud.StudID=enroll.StudID INNER JOIN major ON major.MajorID=stud.MajorID WHERE class.offerID=1 ORDER BY `stud`.`LastName` ASC
