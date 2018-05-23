@@ -130,14 +130,11 @@
 		$showGradingMethod = true;
 		$hasApproval = $staff->hasApproval($_POST['offerID'], $_POST['season'], $_POST['term']);
 		if($hasApproval === true){
-			$showGradingMethod = false;
+			$approval = $staff->getSubjectApprovalStatus($_POST['offerID'], $_POST['season'], $_POST['term']);
+			if($approval['appHead'] === '1'){
+				$showGradingMethod = false;
+			}
 		}
-		// if($approval !== null){
-		// 	if($approval['appHead'] === '1'){
-		// 		$showGradingMethod = false;
-		// 	}
-		// }
-
 
 		$header =
 				"<div class='col-md-12'>
@@ -183,7 +180,8 @@
 					<div style='margin: 0; padding: 0; border-bottom: 1px solid #000'/>
 				";
 		$columnFinal = ($_POST['term']=='Final')?"<tH>Final</tH>":"";
-		$button = $showGradingMethod ? "<button class='btn btn-info btn-sm' id='elec-saveGrade'>Save</button>"
+		$displaySaveButton = $hasApproval ? "":"<button class='btn btn-info btn-sm' id='elec-saveGrade'>Save</button>";
+		$button = $showGradingMethod ? $displaySaveButton
 	    		." <button class='btn btn-success btn-sm' id='elec-submitGrade'>Submit</button>	":
 	    		 "<a href='../report/subjectGrade.php?offerID=".$subjectInfo['offerID']."' target='new' class='btn btn-danger btn-sm'><i class='glyphicon glyphicon-print'></i> Print</a>";
 
