@@ -8,29 +8,21 @@
     $period = $_SESSION["period"];
     $syr = intval($period/10);
     $sem = $period % 10;
+    $arrPeriod = array(1 => "First Semester", 2 =>"Second Semester", 
+                       3 => "Summer");  
+    $sysem = $syr." - ".($syr + 1)." ".$arrPeriod[$sem];
 
 ?>
    <div id="body">
        <div class="container">
-        <div class="row">     
+        <div class="row">  
             <div class="col-sm-4">
                 <form id="search">
-                <label>Subject: &nbsp;&nbsp;</label>
-                <?php //$common->getSubjectListByStaffID(5638); ?>
-                    <select id="year"><?php echo $common->generateYear($syr); ?></select>
-                &nbsp;&nbsp;
-                <label class="radio-inline">
-                  <input type="radio" name="sem" value="1"  
-                  <?php echo $sem==1? 'checked': ''?> />1st Sem
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" name="sem" value="2"
-                  <?php echo $sem==2? 'checked': ''?> />2nd Sem
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" name="sem" value="3" 
-                  <?php echo $sem==3? 'checked': ''?> />Summer
-                </label>
+                <b>Instructor Subjects:</b>
+                <div class="space-2"></div>
+                <b>School Year: <?php echo $sysem; ?></b>
+                
+                
             </form>
                 <div class="list-course">
                     <div class="table-responsive" >
@@ -58,6 +50,12 @@
                 </div>
             </div><!--end of right column-->
         </div><!--end of main row-->
+        <!--HIDDEN ELEMENTS HERE-->
+        <div style='display:none'>
+            <input id='hidden_year' value=<?php echo $syr; ?> />
+            <input id='hidden_sem' value=<?php echo $sem; ?> />
+        </div>
+        
        </div>
    </div>
    <script>

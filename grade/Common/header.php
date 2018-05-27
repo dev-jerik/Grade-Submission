@@ -54,7 +54,7 @@
                     <li id='home'><a href="../../dept/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                     <?php if(!$user->isReg($_SESSION["user_id"])): ?>
                     <li id='f-courses'><a href="../Faculty/subject.php" ><span class="glyphicon glyphicon-book"></span> Subjects</a></li>
-                    <li id='f-gradeSubmission'><a href="../Faculty/gradeSubmission.php" ><i class="fa fa-file-text-o"></i> Submit Grades</a></li>
+                    <li id='f-gradeSubmission'><a href="../Faculty/gradingTerm.php" ><i class="fa fa-file-text-o"></i> Submit Grades</a></li>
                     <?php endif;?>
 
                     <?php if($user->isReg($_SESSION["user_id"])): ?>

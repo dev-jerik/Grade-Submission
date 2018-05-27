@@ -18,8 +18,8 @@
 
                 showInstructorSubjects();
                 function getSeason(){
-                    var year=$("#year").val();
-                    var sem=$("input[name=sem]:checked").val();
+                    var year=$("#hidden_year").val();
+                    var sem=$("#hidden_sem").val();
                     var season = year+""+sem;
                     return season;
                 }
@@ -51,11 +51,6 @@
                 $("input[name='sem']").change(function(){
                     showInstructorSubjects();
                 });
-
-                $("#year").change(function(){
-                    showInstructorSubjects();
-                });
-
 
                 $(document).on("click", "#viewGrades", function(){
                     var subjectTitle = $(this).data('subject');

@@ -7,6 +7,11 @@
     $period = $_SESSION["period"];
     $syr = intval($period/10);
     $sem = $period % 10;
+    $arrPeriod = array(1 => "First Semester", 2 =>"Second Semester", 
+                       3 => "Summer"); 
+
+    $sysem = $arrPeriod[$sem];
+    $gradingPeriod=$_SESSION['gradingPeriod'];
 ?>
    <div id="body" style="margin-top: 0">
        <div class="container">
@@ -18,8 +23,8 @@
                         GRADESHEET STATUS <span class='pull-right' id='holder1'><i class='fa fa-chevron-up'></i></span>
                       </div> 
                       <div class='box-body' id='box-body1'>
-                          <h5 style="font-weight: bold; color: green;">School Year: <span id="year"></span>, <span id="gradeSubmission-sem"></span></h5>
-                          <h5 style="font-weight: bold; color: green;">Term: <span id="gradeSubmission-term"></span></h5>
+                          <h5 style="font-weight: bold; color: green;">School Year: <?php echo $syr; ?>, <?php echo $sysem; ?> </h5>
+                          <h5 style="font-weight: bold; color: green;">Term: <?php echo $gradingPeriod ?></h5>
                           <div class="box-widget border-solid-all" >
                             <table class="table table-condensed " style="margin-bottom: 0">
                               <thead>
@@ -44,10 +49,12 @@
               
           </div><!--end of main row-->
           <input id="hidden_offer" type="text" hidden />
+          <input id="hidden_sem" type="text" hidden value="<?php echo $sem; ?>"/>
+          <input id="hidden_year" type="text" hidden value="<?php echo $syr; ?>" />
+          <input id="hidden_gradingPeriod" type="text" hidden value="<?php echo $gradingPeriod ?>" />
        </div>
 
        <!--hidden elements -->
-       <button type='button' data-target='#gradingPeriod-Modal' data-toggle='modal' id='gradingPeriod' hidden >Grading Period</button>
        <button type='button' data-target='#gradeFileUpload-Modal' data-toggle='modal' id='gradeFileUpload' hidden >CSV FILE UPLOAD</button>
    </div>
 
@@ -60,7 +67,6 @@
    <!---------- Include Modal Here -------------------->
     <?php 
         include('gradeFileUpload-Modal.php');
-        include('gradingPeriod-Modal.php'); 
         
     ?>
     <!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
@@ -74,7 +80,7 @@
 
             function showSubjectStatus(){
                 var season=getGradingSeason();
-            	  var term = $("#gradingPeriod-term").val();
+            	var term = $("#hidden_gradingPeriod").val()
                 $.post("../Model/Service.php",
                     {season:season, term: term, action: "getSubjectStatus"},
                     function(data){
@@ -85,7 +91,7 @@
 
             function tblGradesValues(){
             	var TableData = new Array();
-              var term = $("#gradingPeriod-term").val();
+              var term = $("#hidden_gradingPeriod").val()
               
       				$('#tbl-elecSaveGrade tbody tr').each(function(row, tr){
                 if(term === "Midterm"){
@@ -126,7 +132,7 @@
                         objJSON = JSON.stringify(arrGrades);              
                         var offerID = $("#hidden_offer").val();
                         var season=getGradingSeason();
-                        var term = $("#gradingPeriod-term").val();
+                        var term = $("#hidden_gradingPeriod").val()
                         $.post("../Model/Service.php",
                         {season: season, term:term, offerID: offerID, objJSON, objJSON, action: "submitGrades"},
                             function(data){
@@ -158,7 +164,7 @@
                 objJSON = JSON.stringify(csvGradeValues()); 
                 var offerID = $("#hidden_offer").val();
                 var season=getGradingSeason();
-                var term = $("#gradingPeriod-term").val();
+                var term = $("#hidden_gradingPeriod").val()
                 $.post("../Model/Service.php",
                         {season: season, term:term, offerID: offerID, objJSON, objJSON, action: "submitGrades"},
                         function(data){
@@ -173,7 +179,7 @@
             $(document).on("click", "#elec-saveGrade", function(e){
             	e.preventDefault();
 				      objJSON = JSON.stringify(tblGradesValues());
-            	var term = $("#gradingPeriod-term").val();
+            	var term = $("#hidden_gradingPeriod").val()
             	var offerID = $("#hidden_offer").val();
                 $.post("../Model/Service.php",
                     {term:term, offerID: offerID, objJSON, objJSON, action: "saveGrades"},
@@ -259,7 +265,7 @@
             //generate the view for grade submission
             function genGradeSubmission(offerID){
             	var season=getGradingSeason();
-            	var term = $("#gradingPeriod-term").val();
+            	var term = $("#hidden_gradingPeriod").val()
             	$.post("../Model/Service.php",
                     {season:season, offerID: offerID, term: term, action: "getGradeSubmissionView"},
                     function(data){
@@ -270,34 +276,17 @@
             }
 
 			function getGradingSeason(){
-                var year=$("#gradingPeriod_year").val();
-                var sem=$("input[name=gradeSubmission-sem]:checked").val();
+                var year=$("#hidden_year").val();
+                var sem=$("#hidden_sem").val();
                 var season = year+""+sem;
                 return season;
             }
             function initialize(){
-            	$("#year").html($("#gradingPeriod_year").val());
-            	$("#gradeSubmission-term ").html($("#gradingPeriod-term").val()); 
-
-            	var sem = $("input[name=gradeSubmission-sem]:checked").val();
-            	var semDisplay = (sem==1)?"1st Semester":(sem==2)?"2nd Semester":"Summer"
-            	$("#gradeSubmission-sem").html(semDisplay); 
-
             	showSubjectStatus();
 
             	$("#gradeStatus-header").show();
             }
-             //Grading Period
-            $("#gradingPeriod").click();
-            
-            $("#gradingPeriod-Form").submit(function(e){
-                e.preventDefault();
-                $('#gradingPeriod-Modal').modal('toggle');
-                initialize();                
-            });
-
-
-
+            initialize();
 	});
     </script>
 
